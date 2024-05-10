@@ -1,0 +1,41 @@
+name: Publish Lambda Function
+
+on:
+  push:
+    branches:
+      - teste
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install awscli --upgrade --user
+
+    - name: Build and Package Lambda Function
+      run: |
+        npm install
+        npm run build
+        zip -r lambda_function.zip .
+
+    - name: Deploy Lambda Function
+      run: |
+        aws lambda update-function-code \
+          --function-name YOUR_FUNCTION_NAME \
+          --zip-file fileb://lambda_function.zip \
+          --region YOUR_AWS_REGION
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
