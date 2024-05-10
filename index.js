@@ -9,7 +9,7 @@ module.exports.handler = async (event) => {
     
     const params = {
         AuthFlow: 'USER_PASSWORD_AUTH',
-        ClientId: '7g4pnon4v0drq1jbvfb6t6smc',
+        ClientId: '1ci6j56p8fh8vnshm5c5c0troa',
         AuthParameters: {
             USERNAME: event.username,
             PASSWORD: event.password

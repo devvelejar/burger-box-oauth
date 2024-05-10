@@ -3,7 +3,7 @@ name: Publish Lambda Function
 on:
   push:
     branches:
-      - teste
+      - master
 
 jobs:
   deploy:
@@ -26,16 +26,15 @@ jobs:
 
     - name: Build and Package Lambda Function
       run: |
-        npm install
-        npm run build
-        zip -r lambda_function.zip .
-
+        npm ci
+        zip -r oauth-cognito.zip node_modules/ index.js 
     - name: Deploy Lambda Function
       run: |
         aws lambda update-function-code \
-          --function-name YOUR_FUNCTION_NAME \
-          --zip-file fileb://lambda_function.zip \
-          --region YOUR_AWS_REGION
+          --function-name oauth-cognito \
+          --zip-file fileb://oauth-cognito.zip \
+          --region us-east-1
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
