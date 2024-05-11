@@ -5,14 +5,13 @@ const AWS = require('aws-sdk');
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
 module.exports.handler = async (event) => {
-    console.log(event);
-    
+    const body = JSON.parse(event.body);
     const params = {
         AuthFlow: 'USER_PASSWORD_AUTH',
-        ClientId: '1ci6j56p8fh8vnshm5c5c0troa',
+        ClientId: '2p31g69ds1obkus7eucka63c82',
         AuthParameters: {
-            USERNAME: event.username,
-            PASSWORD: event.password
+            USERNAME: body.username,
+            PASSWORD: body.password
         }
     };
     
